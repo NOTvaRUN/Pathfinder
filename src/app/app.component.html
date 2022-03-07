@@ -1,3 +1,12 @@
-<ng-container *ngFor="let g of grid">
-  <span>{{g}}</span>
+<ng-container *ngFor="let g of grid; let i = index">
+  <div class="container">
+    <ng-container *ngFor="let c of g; let j = index">
+      <button class="btn btn-primary m-2" (click)="selectChunk(i, j)">{{c}}</button>
+    </ng-container>
+  </div>
 </ng-container>
+
+<button (click)="selectMario()">Mario</button>
+<button (click)="selectPrincess()">Princess</button>
+<button (click)="clearAll()">ClearAll</button>
+<button (click)="start()">Start</button>

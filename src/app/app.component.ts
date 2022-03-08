@@ -9,9 +9,78 @@ import { PathAiService } from './path-ai.service';
 export class AppComponent {
   title = 'path';
   public grid = [
-    ['', '', ''],
-    ['', '', ''],
-    ['', '', ''],
+    [
+      {
+        label: '',
+        checked: false
+      }, 
+      {
+        label: '',
+        checked: false
+      },
+      {
+        label: '',
+        checked: false
+      },
+      {
+        label: '',
+        checked: false
+      }
+    ],
+    [
+      {
+        label: '',
+        checked: false
+      }, 
+      {
+        label: '',
+        checked: false
+      },
+      {
+        label: '',
+        checked: false
+      },
+      {
+        label: '',
+        checked: false
+      }
+    ],
+    [
+      {
+        label: '',
+        checked: false
+      }, 
+      {
+        label: '',
+        checked: false
+      },
+      {
+        label: '',
+        checked: false
+      },
+      {
+        label: '',
+        checked: false
+      }
+    ],
+    [
+      {
+        label: '',
+        checked: false
+      }, 
+      {
+        label: '',
+        checked: false
+      },
+      {
+        label: '',
+        checked: false
+      },
+      {
+        label: '',
+        checked: false
+      }
+    ],
   ];
   public gridCopy: any;
   constructor(public path: PathAiService){
@@ -35,20 +104,37 @@ export class AppComponent {
     switch(this.selectMode){
       case 'mario':
         if(this.lastMarioIndex[0] !== 999 && this.lastMarioIndex[1] !== 999){
-          this.grid[this.lastMarioIndex[0]][this.lastMarioIndex[1]] = '';
+          this.grid[this.lastMarioIndex[0]][this.lastMarioIndex[1]] = {
+            label: '',
+            checked: false
+          };
         }
-        this.grid[i][j] = 'M';
+        this.grid[i][j] = {
+          label: 'M',
+          checked: false
+        };
         this.lastMarioIndex = [i, j]
         break;
       case 'princess':
         if(this.lastPrincessIndex[0] !== 999 && this.lastPrincessIndex[1] !== 999){
-          this.grid[this.lastPrincessIndex[0]][this.lastPrincessIndex[1]] = '';
+          this.grid[this.lastPrincessIndex[0]][this.lastPrincessIndex[1]] = {
+            label: '',
+            checked: false
+          };
         }
-        this.grid[i][j] = 'P';
+        this.grid[i][j] = {
+          label: 'P',
+          checked: false
+        };
         this.lastPrincessIndex = [i, j];
         break;
     }
   }
+
+  start(){
+    this.path.varioPosition(this.lastMarioIndex, this.lastPrincessIndex);
+  }
+
 
 
   clearAll(){
@@ -59,5 +145,4 @@ export class AppComponent {
     return obj ? JSON.parse(JSON.stringify(obj)): obj;
   }
 
-  start(){}
 }

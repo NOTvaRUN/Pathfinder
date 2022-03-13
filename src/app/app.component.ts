@@ -72,8 +72,10 @@ export class AppComponent {
         let surr = this.path.getSurroundings(this.lastMarioIndex[0], this.lastMarioIndex[1]);
         for (let coord of surr) {
           if (this.grid[coord[0]][coord[1]]?.person == 'princess') {
-            console.log("FOUND IT NIGGA");
             foundPrincess = true;
+            setTimeout(()=>{
+              alert('Found the princess.');
+            }, 1000)
           }
         }
         if(!foundPrincess){

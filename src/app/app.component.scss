@@ -1,0 +1,47 @@
+.body {
+  background: #ae85ca;
+  overflow: hidden;
+  margin: 17px;
+  height: calc(100% - 42px);
+  border-radius: 38px 97px 47px 95px;
+  border: solid #333333;
+  padding: 25px;
+  border-width: 2px 9px 3px 4px;
+}
+.container {
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: center;
+  //   display: flex;
+  //   justify-content: space-around;
+}
+.mario-div {
+  margin: 5px;
+  display: inline-block;
+  height: 50px;
+  width: 60px;
+  background: #7ecaf6c7;
+  border: 4px solid black;
+  border-radius: 9px;
+}
+.scrollable-height {
+  overflow: scroll;
+  height: 100%;
+}
+.cross,
+.var,
+.princess {
+  height: 40px;
+  width: 26px;
+}
+.var,
+.princess {
+  transform: scale(1.3);
+}
+
+.found-chunk {
+  background: orange;
+}
+.var-highlight {
+  background: #2f8384;
+}

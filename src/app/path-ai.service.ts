@@ -42,9 +42,9 @@ export class PathAiService {
     let cx: any = x;
     let cy: any = y;
     let surr = [];
-    let randomizer = this.getCopy(this.range3Array);
-    randomizer.sort(() => Math.random() - 0.5);
-    for (let range of randomizer) {
+    // this.range3Array = this.getCopy(this.range3Array);
+    this.range3Array.sort(() => Math.random() - 0.5);
+    for (let range of this.range3Array) {
       let x = cx + range[0];
       let y = cy + range[1];
       if((x >= 0 && x < this.max) && (y >= 0 && y < this.max)){
@@ -58,6 +58,8 @@ export class PathAiService {
     let coord;
     let moveTo;
     let max = 0;
+    options.sort(() => Math.random() - 0.5)
+    console.log(options);
     for (let option of options) {
       let surr = this.getSurroundings(option[0], option[1]);
       coord = surr ?? coord;

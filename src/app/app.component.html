@@ -2,8 +2,8 @@
   <div class="container">
     <ng-container *ngFor="let c of g; let j = index">
       <div style="display: inline-block;border: 1px solid grey;">
-        <button class="btn btn-primary m-2" (click)="selectChunk(i, j)">{{c.label}}</button>
-        <span>{{"x = " + i}}{{"y = " + j}}</span>
+        <button class="btn btn-primary m-2" [ngClass]="{'btn-warning': c.checked}" (click)="selectChunk(i, j)">{{c.label}}</button>
+        <!-- <span>{{"x = " + i}}{{"y = " + j}}</span> -->
       </div>
     </ng-container>
   </div>

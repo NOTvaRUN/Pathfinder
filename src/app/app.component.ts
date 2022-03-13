@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { timer, Observable } from 'rxjs';
 import { PathAiService } from './path-ai.service';
 
 @Component({
@@ -8,90 +9,19 @@ import { PathAiService } from './path-ai.service';
 })
 export class AppComponent {
   title = 'path';
-  public grid = [
-    [
-      {
-        label: '',
-        checked: false
-      }, 
-      {
-        label: '',
-        checked: false
-      },
-      {
-        label: '',
-        checked: false
-      },
-      {
-        label: '',
-        checked: false
-      }
-    ],
-    [
-      {
-        label: '',
-        checked: false
-      }, 
-      {
-        label: '',
-        checked: false
-      },
-      {
-        label: '',
-        checked: false
-      },
-      {
-        label: '',
-        checked: false
-      }
-    ],
-    [
-      {
-        label: '',
-        checked: false
-      }, 
-      {
-        label: '',
-        checked: false
-      },
-      {
-        label: '',
-        checked: false
-      },
-      {
-        label: '',
-        checked: false
-      }
-    ],
-    [
-      {
-        label: '',
-        checked: false
-      }, 
-      {
-        label: '',
-        checked: false
-      },
-      {
-        label: '',
-        checked: false
-      },
-      {
-        label: '',
-        checked: false
-      }
-    ],
-  ];
+  public grid: Array<any> = [];
   public gridCopy: any;
-  constructor(public path: PathAiService){
-
-  }
+  public updateInterval = timer(1000, 1000);
+  constructor(public path: PathAiService){}
   ngOnInit(){
-    this.gridCopy = this.getCopy(this.grid);
+    this.grid = this.path.createGrid(10, 10);
+    this.gridCopy = this.path.getCopy(this.grid);
   }
   public selectMode = '';
+  public pathFinder: any;
   public lastMarioIndex = [999, 999];
   public lastPrincessIndex = [999, 999];
+
   selectMario() {
     this.selectMode = 'mario';
   }
@@ -124,25 +54,47 @@ export class AppComponent {
         }
         this.grid[i][j] = {
           label: 'P',
-          checked: false
+          checked: false,
+          person: 'princess'
         };
         this.lastPrincessIndex = [i, j];
         break;
     }
   }
-
   start(){
-    this.path.varioPosition(this.lastMarioIndex, this.lastPrincessIndex);
+      this.path.vI = this.lastMarioIndex;
+      this.path.pI = this.lastPrincessIndex;
+      this.path.grid = this.grid;
+      this.path.max = this.grid.length;
+      this.clearFinder();
+      this.pathFinder = this.path.varioPosition.subscribe((bestCase: any) => {
+        let foundPrincess = false;
+        let surr = this.path.getSurroundings(this.lastMarioIndex[0], this.lastMarioIndex[1]);
+        for (let coord of surr) {
+          if (this.grid[coord[0]][coord[1]]?.person == 'princess') {
+            console.log("FOUND IT NIGGA");
+            foundPrincess = true;
+          }
+        }
+        if(!foundPrincess){
+          this.selectMario();
+          setTimeout(()=>{
+            this.selectChunk(bestCase.moveTo[0], bestCase.moveTo[1]);
+            this.start();
+          }, 500)
+        }
+      })
   }
 
-
+  clearFinder(){
+    if (this.pathFinder) { 
+      this.pathFinder.unsubscribe();
+    }
+  }
 
   clearAll(){
-    this.grid = this.getCopy(this.gridCopy);
-  }
-
-  getCopy(obj: any): any{
-    return obj ? JSON.parse(JSON.stringify(obj)): obj;
+    this.clearFinder();
+    this.grid = this.path.getCopy(this.gridCopy);
   }
 
 }

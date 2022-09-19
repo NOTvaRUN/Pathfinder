@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PathAiService {
   public vI: Array<Number> = [0, 0];
@@ -21,24 +21,24 @@ export class PathAiService {
 
   public gridObject = {
     label: '',
-    checked: false
-  }
+    checked: false,
+  };
 
   public grid: Array<any> = [];
-  constructor() { }
+  constructor() {}
 
-  varioPosition = new Observable((subscriber)=>{
+  varioPosition = new Observable((subscriber) => {
     let sur = this.getSurroundings(this.vI[0], this.vI[1]);
     this.checkGrid(sur);
     this.checkWhereVarioIsStanding(this.vI);
     let bestCase = this.getBestToMoveTo(sur);
     subscriber.next(bestCase);
-  })
+  });
   // varioPosition(vario: Array<any>, princess: Array<any>, grid: any){
 
   // }
 
-  getSurroundings(x: Number, y: Number){
+  getSurroundings(x: Number, y: Number) {
     let cx: any = x;
     let cy: any = y;
     let surr = [];
@@ -47,19 +47,18 @@ export class PathAiService {
     for (let range of this.range3Array) {
       let x = cx + range[0];
       let y = cy + range[1];
-      if((x >= 0 && x < this.max) && (y >= 0 && y < this.max)){
-        surr.push([x, y])
+      if (x >= 0 && x < this.max && y >= 0 && y < this.max) {
+        surr.push([x, y]);
       }
     }
     return surr;
   }
 
-  getBestToMoveTo(options: Array<any>){
+  getBestToMoveTo(options: Array<any>) {
     let coord;
     let moveTo;
     let max = 0;
-    options.sort(() => Math.random() - 0.5)
-    console.log(options);
+    options.sort(() => Math.random() - 0.5);
     for (let option of options) {
       let surr = this.getSurroundings(option[0], option[1]);
       coord = surr ?? coord;
@@ -71,39 +70,38 @@ export class PathAiService {
         moveTo = [option[0], option[1]];
       }
     }
-    return {coord, max, moveTo};
+    return { coord, max, moveTo };
   }
 
-  checkedCount(coords: Array<Array<number>>){
+  checkedCount(coords: Array<Array<number>>) {
     return coords.filter((value) => {
       return !this.grid[value[0]][value[1]].checked;
-    })
+    });
   }
 
-  checkGrid(grid: Array<any>){
-    for(let a of grid){
+  checkGrid(grid: Array<any>) {
+    for (let a of grid) {
       this.grid[a[0]][a[1]].checked = true;
     }
   }
 
-  checkWhereVarioIsStanding(pos: Array<any>){
+  checkWhereVarioIsStanding(pos: Array<any>) {
     this.grid[pos[0]][pos[1]].checked = true;
   }
 
-  createGrid(row: number, col: number): Array<any>{
-    let t = []
-    for(let i = 0; i < row; i ++){
-      let r = []
-      for(let j = 0; j < row; j ++){
-        r.push(this.getCopy(this.gridObject))
+  createGrid(row: number, col: number): Array<any> {
+    let t = [];
+    for (let i = 0; i < row; i++) {
+      let r = [];
+      for (let j = 0; j < row; j++) {
+        r.push(this.getCopy(this.gridObject));
       }
       t.push(r);
     }
     return t;
   }
 
-
-  getCopy(obj: any): any{
-    return obj ? JSON.parse(JSON.stringify(obj)): obj;
+  getCopy(obj: any): any {
+    return obj ? JSON.parse(JSON.stringify(obj)) : obj;
   }
 }
